@@ -35,13 +35,27 @@ public class Board {
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
-    public Board(String title, String subTitle, String content, BoardType boardType, User userId) {
+    public Board(String title, String subTitle, String content, BoardType boardType, User user) {
         this.title = title;
         this.subTitle = subTitle;
         this.content = content;
         this.boardType = boardType;
-        this.userId = userId;
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "idx=" + idx +
+                ", title='" + title + '\'' +
+                ", subTitle='" + subTitle + '\'' +
+                ", content='" + content + '\'' +
+                ", boardType=" + boardType +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
+                ", user=" + user +
+                '}';
     }
 }

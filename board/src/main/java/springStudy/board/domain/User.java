@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +33,9 @@ public class User {
 
     @Column
     private LocalDateTime updateDate;
+
+//    @OneToMany(mappedBy = "user")
+//    private List<Board> boards = new ArrayList<>();
 
     public User(String name, String nickName, String password, String email, LocalDateTime createDate) {
         this.name = name;
