@@ -37,11 +37,11 @@ public class User {
 //    @OneToMany(mappedBy = "user")
 //    private List<Board> boards = new ArrayList<>();
 
-    public User(String name, String nickName, String password, String email, LocalDateTime createDate) {
+    public User(String name, String nickName, String password, String email) {
         this.name = name;
         this.nickName = nickName;
         this.password = password;
         this.email = email;
-        this.createDate = createDate;
+        this.createDate = LocalDateTime.now();
     }
 }

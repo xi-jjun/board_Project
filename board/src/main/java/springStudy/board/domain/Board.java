@@ -37,12 +37,24 @@ public class Board {
     @JoinColumn(name = "user_id")
     private User user;
 
+    // === Create Method ===
     public Board(String title, String subTitle, String content, BoardType boardType, User user) {
         this.title = title;
         this.subTitle = subTitle;
         this.content = content;
         this.boardType = boardType;
         this.user = user;
+        this.createDate = LocalDateTime.now();
+    }
+
+    // === update ===
+    public Long updateBoard(String title, String subTitle, String content, BoardType boardType) {
+        this.title = title;
+        this.subTitle = subTitle;
+        this.content = content;
+        this.boardType = boardType;
+        this.updateDate = LocalDateTime.now();
+        return this.getIdx();
     }
 
     @Override
