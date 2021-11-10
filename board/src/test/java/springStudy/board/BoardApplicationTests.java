@@ -9,6 +9,7 @@ import springStudy.board.domain.Board;
 import springStudy.board.domain.User;
 import springStudy.board.domain.enums.BoardType;
 import springStudy.board.repository.BoardRepository;
+import springStudy.board.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
@@ -21,12 +22,13 @@ class BoardApplicationTests {
 	private EntityManager em;
 
 	@Autowired private BoardRepository boardRepository;
+	@Autowired private UserRepository userRepository;
 
 	@Test
 	void insert() { // insert into User (id, name...) values (1L, ...)
 		// 새로운 회원가입
 		User user = new User("재준", "공돌이", "1234pw",
-				"rrl@gmail.com", LocalDateTime.now());
+				"rrl@gmail.com");
 
 		Board newContent = new Board("제목", "부제목","내용이다ㅏㅏㅏㅏㅏㅏㅏ",
 				BoardType.FREE, user);
@@ -38,9 +40,9 @@ class BoardApplicationTests {
 	}
 
 	@Test
-	void findByUserName() {
+	void findBoardByUserNickName() {
 		User user = new User("UserA1", "공돌이1", "1234pw",
-				"rrl@gmail.com", LocalDateTime.now());
+				"rrl@gmail.com");
 
 		Board newContent = new Board("제목A", "A부제목","A내용이다ㅏㅏㅏㅏㅏㅏㅏ",
 				BoardType.FREE, user);
@@ -58,11 +60,42 @@ class BoardApplicationTests {
 
 		em.flush();
 		em.clear();
-		List<Board> thisUserContents = boardRepository.findAllByUser(user);
+		List<Board> thisUserContents = boardRepository.findAllContentsByUser(user.getNickName());
 		for (Board content : thisUserContents) {
 			System.out.println("content = " + content);
 		}
 		Assertions.assertThat(3).isEqualTo(thisUserContents.size());
+	}
+
+	@Test
+	void saveUser() {
+		// Join User
+		User user = new User("UserB", "공돌이1B", "1234pw",
+				"rrl@gmail.com");
+		userRepository.save(user);
+
+		// find User
+		User findUser = userRepository.findOne(user.getIdx());
+
+		// check ? JoinUser == Find User
+		Assertions.assertThat(user).isEqualTo(findUser);
+	}
+
+	@Test
+	void saveAndFindUsers() {
+		User user1 = new User("User11", "공돌이1111", "1234pw",
+				"rrl@gmail.com");
+		User user2 = new User("User22", "공돌이2222", "1234pw",
+				"rrl@gmail.com");
+
+		userRepository.save(user1);
+		userRepository.save(user2);
+
+		List<User> findUsers = userRepository.findByName("User11");
+		for (User findUser : findUsers) {
+			System.out.println("findUser = " + findUser.getName() + " " + findUser.getNickName());
+		}
+		Assertions.assertThat(findUsers.size()).isEqualTo(1);
 	}
 
 }
