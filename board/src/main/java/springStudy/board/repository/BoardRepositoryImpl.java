@@ -3,16 +3,13 @@ package springStudy.board.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import springStudy.board.domain.Board;
-import springStudy.board.domain.User;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
 public class BoardRepositoryImpl implements BoardRepository {
-    @PersistenceContext
     private final EntityManager em;
 
     @Override
@@ -26,9 +23,21 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public List<Board> findAllByUser(User user) {
-        return em.createQuery("select b from Board b where b.user=:user", Board.class)
-                .setParameter("user", user)
+    public List<Board> findAllContentsByUser(String nickName) {
+        return em.createQuery("select b from Board b where b.user.nickName=:nickName", Board.class)
+                .setParameter("nickName", nickName)
+                .getResultList();
+    }
+
+    @Override
+    public void remove(Long id) {
+        Board findBoard = em.find(Board.class, id);
+        em.remove(findBoard);
+    }
+
+    @Override
+    public List<Board> findAll() {
+        return em.createQuery("select b from Board b", Board.class)
                 .getResultList();
     }
 }
