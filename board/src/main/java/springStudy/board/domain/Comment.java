@@ -1,15 +1,18 @@
 package springStudy.board.domain;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@RequiredArgsConstructor
 @Table(name = "comment")
 public class Comment {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id;
 
@@ -29,4 +32,15 @@ public class Comment {
 
     @Column(name = "comment_updated_dt")
     private LocalDateTime updateDate;
+
+    public Comment(Posting posting, User user, String content) {
+        this.posting = posting;
+        this.user = user;
+        this.content = content;
+        this.createDate = LocalDateTime.now();
+    }
+
+    public void updateComment(String content) {
+        this.content = content;
+    }
 }

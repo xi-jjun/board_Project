@@ -1,14 +1,19 @@
 package springStudy.board.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import springStudy.board.domain.enums.PostingType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "posting")
 @Entity
 @Getter
+@RequiredArgsConstructor
 public class Posting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +27,9 @@ public class Posting {
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "posting")
+    private List<Comment> comments = new ArrayList<>();
 
     @Column(length = 30)
     private String title;
@@ -41,4 +49,24 @@ public class Posting {
 
     @Column(name = "post_updated_dt")
     private LocalDateTime updateDate;
+
+    @Builder
+    public Posting(Board board, User user, String title,
+                   String subtitle, String content, PostingType postingType) {
+        this.board = board;
+        this.user = user;
+        this.title = title;
+        this.subtitle = subtitle;
+        this.content = content;
+        this.postingType = postingType;
+        this.createDate = LocalDateTime.now();
+    }
+
+    public void updatePosting(String title, String subtitle, String content, PostingType postingType) {
+        this.title = title;
+        this.subtitle = subtitle;
+        this.content = content;
+        this.postingType = postingType;
+        this.updateDate = LocalDateTime.now();
+    }
 }
