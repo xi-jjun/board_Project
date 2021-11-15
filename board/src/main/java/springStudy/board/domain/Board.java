@@ -1,6 +1,7 @@
 package springStudy.board.domain;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @RequiredArgsConstructor
 @Table(name = "board")
 public class Board {
     @Id
@@ -19,9 +20,18 @@ public class Board {
     @Column(name = "board_name")
     private String name;
 
-    @OneToMany(mappedBy = "posting_id")
+    @OneToMany(mappedBy = "board")
     private List<Posting> postings = new ArrayList<>();
 
     @Column(name = "board_created_dt")
     private LocalDateTime createDate;
+
+    public Board(String name) {
+        this.name = name;
+        this.createDate = LocalDateTime.now();
+    }
+
+    public void changeName(String name) {
+        this.name = name;
+    }
 }
