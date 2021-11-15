@@ -8,11 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import springStudy.board.domain.Board;
 import springStudy.board.domain.User;
 import springStudy.board.domain.enums.BoardType;
-import springStudy.board.repository.BoardRepository;
-import springStudy.board.repository.UserRepository;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -60,11 +57,11 @@ class BoardApplicationTests {
 
 		em.flush();
 		em.clear();
-		List<Board> thisUserContents = boardRepository.findAllContentsByUser(user.getNickName());
-		for (Board content : thisUserContents) {
-			System.out.println("content = " + content);
-		}
-		Assertions.assertThat(3).isEqualTo(thisUserContents.size());
+//		List<Board> thisUserContents = boardRepository.findAllContentsByUser(user.getNickName());
+//		for (Board content : thisUserContents) {
+//			System.out.println("content = " + content);
+//		}
+//		Assertions.assertThat(3).isEqualTo(thisUserContents.size());
 	}
 
 	@Test
