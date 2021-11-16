@@ -4,8 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 import springStudy.board.domain.enums.PostingType;
-
-import static org.junit.jupiter.api.Assertions.*;
+import springStudy.board.domain.enums.UserRank;
 
 @Transactional
 class BoardTest {
@@ -20,7 +19,7 @@ class BoardTest {
     void createPosting() {
         Board board = new Board("자유게시판");
         User user = new User("김재준", "rlawowns97@gmail.com",
-                "1234pw", "공돌이");
+                "1234pw", "공돌이", UserRank.NORMAL);
         Posting posting = new Posting(board, user, "야식 추천좀", "",
                 "제곧내", PostingType.FREE);
 
@@ -33,7 +32,7 @@ class BoardTest {
     void createComment() {
         Board board = new Board("질문게시판");
         User user = new User("김재준1", "rlawowns971@gmail.com",
-                "1234pw", "공돌이1");
+                "1234pw", "공돌이1", UserRank.NORMAL);
         Posting posting = new Posting(board, user, "야식 추천좀", "",
                 "제곧내", PostingType.FREE);
 
