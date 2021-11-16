@@ -2,6 +2,7 @@ package springStudy.board.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import springStudy.board.domain.enums.UserRank;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,6 +29,10 @@ public class User {
     @Column(name = "nick_name")
     private String nickName;
 
+    @Column(name = "user_rank")
+    @Enumerated(EnumType.STRING)
+    private UserRank userRank;
+
     @Column(name = "user_created_dt")
     private LocalDateTime regDate;
 
@@ -40,11 +45,12 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
 
-    public User(String name, String email, String password, String nickName) {
+    public User(String name, String email, String password, String nickName, UserRank userRank) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.nickName = nickName;
+        this.userRank = userRank;
         this.regDate = LocalDateTime.now();
     }
 
@@ -54,6 +60,10 @@ public class User {
         this.password = password;
         this.nickName = nickName;
         this.updateDate = LocalDateTime.now();
+    }
+
+    public void changeUserRank(UserRank userRank) {
+        this.userRank = userRank;
     }
 }
 
