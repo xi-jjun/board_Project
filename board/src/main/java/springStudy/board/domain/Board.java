@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @RequiredArgsConstructor
+@Getter
+@RequiredArgsConstructor
 @Table(name = "board")
 public class Board {
     @Id
@@ -20,6 +21,9 @@ public class Board {
     @Column(name = "board_name")
     private String name;
 
+    @Column(name = "active")
+    private boolean active;
+
     @OneToMany(mappedBy = "board")
     private List<Posting> postings = new ArrayList<>();
 
@@ -28,10 +32,15 @@ public class Board {
 
     public Board(String name) {
         this.name = name;
+        this.active = true;
         this.createDate = LocalDateTime.now();
     }
 
     public void changeName(String name) {
         this.name = name;
+    }
+
+    public void changeActive(boolean active) {
+        this.active = active;
     }
 }
