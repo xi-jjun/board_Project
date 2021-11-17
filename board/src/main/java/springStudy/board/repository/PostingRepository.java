@@ -16,6 +16,10 @@ public class PostingRepository {
         em.persist(posting);
     }
 
+    public Posting findOne(Long id) {
+        return em.find(Posting.class, id);
+    }
+
     public void remove(Long id) {
         Posting findPosting = em.find(Posting.class, id);
         em.remove(findPosting);

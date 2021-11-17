@@ -3,7 +3,6 @@ package springStudy.board.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import springStudy.board.domain.Board;
-import springStudy.board.domain.Posting;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -15,6 +14,10 @@ public class BoardRepository {
 
     public void save(Board board) {
         em.persist(board);
+    }
+
+    public Board findBoard(Long id) {
+        return em.find(Board.class, id);
     }
 
     public List<Board> findAllBoards() {
