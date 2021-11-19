@@ -40,7 +40,7 @@ public class Board {
         this.name = name;
     }
 
-    public void changeActive(boolean active) {
-        this.active = active;
+    public void changeActive() {
+        active = !active;
     }
 }
