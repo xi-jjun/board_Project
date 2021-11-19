@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springStudy.board.domain.User;
+import springStudy.board.domain.enums.UserRank;
 import springStudy.board.repository.UserRepository;
 
 import java.util.List;
@@ -39,16 +40,42 @@ public class UserService {
         }
     }
 
+    public User findUserByNickName(String nickName) {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if (user.getNickName().equals(nickName))
+                return user;
+        }
+        return null;
+    }
+
+    public User findUser(Long userId) {
+        return userRepository.findOne(userId);
+    }
+
     @Transactional
-    public void updateUser(User updatedInfo) {
-        checkDuplicatedUserEmail(updatedInfo.getEmail());
-        checkDuplicatedUserNickName(updatedInfo.getNickName());
-        userRepository.save(updatedInfo);
+    public void updateUser(User updatedUser, String userName, String email, String password, String nickName) {
+        checkDuplicatedUserEmail(email);
+        checkDuplicatedUserNickName(nickName);
+        updatedUser.updateUserInfo(userName, email, password, nickName);
+    }
+
+    @Transactional
+    public void changeUserRank(UserRank changerRank, User toBeChangedUser) {
+        if (changerRank == UserRank.NORMAL) {
+            throw new IllegalStateException("관리자 권한이 없습니다");
+        }
+        toBeChangedUser.changeUserRank(
+                toBeChangedUser.getUserRank() == UserRank.NORMAL ? UserRank.ADMIN : UserRank.NORMAL);
     }
 
     @Transactional
     public void deleteUser(User user) {
         User findUser = userRepository.findOne(user.getId());
         userRepository.remove(findUser.getId());
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

@@ -27,16 +27,29 @@ public class BoardService {
     private void checkDuplicatedBoardName(Board board) {
         List<Board> boards = boardRepository.findAllBoards();
         for (Board b : boards) {
-            if(b.getName().equals(board.getName())) throw new IllegalStateException("중복된 이름의 게시판입니다");
+            if (b.getName().equals(board.getName())) throw new IllegalStateException("중복된 이름의 게시판입니다");
         }
     }
 
     @Transactional
     public void changeActive(Long userId, Long boardId) {
+        checkRankAdmin(userId);
+        Board board = boardRepository.findBoard(boardId);
+        board.changeActive();
+    }
+
+    private void checkRankAdmin(Long userId) {
         User user = userRepository.findOne(userId);
-        if (user.getUserRank() == UserRank.ADMIN) {
-            Board board = boardRepository.findBoard(boardId);
-            board.changeActive(!board.isActive());
+        if (user.getUserRank() == UserRank.NORMAL) {
+            throw new IllegalStateException("관리자 권한이 없습니다");
         }
+    }
+
+    public Board selectBoard(Long boardId) {
+        return boardRepository.findBoard(boardId);
+    }
+
+    public List<Board> showAll() {
+        return boardRepository.findAllBoards();
     }
 }
